@@ -6,6 +6,7 @@ import utils.logger.TAFLogger;
 import utils.settings.Settings;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 public class BrowserManager {
     protected static final Logger logger = TAFLogger.logger;
@@ -38,21 +39,26 @@ public class BrowserManager {
     }
 
     public static boolean isFileDownloaded(String fileName) {
-        String downloadDir = "";
-        File dir = new File(downloadDir + "\\src\\main\\resources\\downloads");
-        File[] dirContents = dir.listFiles();
+        String downloadedFile = Paths.get("").toAbsolutePath() + String.format("\\src\\main\\resources\\downloads\\%s", fileName);
+        File file = new File(downloadedFile);
 
-        for (File dirContent : dirContents) {
-            if (dirContent.getName().equals(fileName)) {
-                dirContent.delete();
-                return true;
-            }
-        }
-        return false;
+        return file.getName().equals(fileName);
     }
 
     public static void refreshPage() {
         getBrowser().getDriver().navigate().refresh();
+    }
+
+    public static void navigateBackInPage() {
+        getBrowser().getDriver().navigate().back();
+    }
+
+    public static void switchToFrame(WebElement webElement) {
+        getBrowser().getDriver().switchTo().frame(webElement);
+    }
+
+    public static void switchToDefaultContent() {
+        getBrowser().getDriver().switchTo().defaultContent();
     }
 
     public static boolean alertIsPresent() {
@@ -70,6 +76,14 @@ public class BrowserManager {
 
     public static void acceptAlert() {
         getBrowser().getDriver().switchTo().alert().accept();
+    }
+
+    public static void dismissAlert() {
+        getBrowser().getDriver().switchTo().alert().dismiss();
+    }
+
+    public static void sendKeysToAlert(String text) {
+        getBrowser().getDriver().switchTo().alert().sendKeys(text);
     }
 
     public static boolean isElementPresent(By element) {

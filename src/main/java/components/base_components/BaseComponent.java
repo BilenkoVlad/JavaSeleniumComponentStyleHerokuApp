@@ -114,6 +114,37 @@ public class BaseComponent {
         actions.contextClick(webElement).perform();
     }
 
+    public void moveToElement(int xOffset, int yOffset) {
+        actions = new Actions(driver);
+        actions.moveToElement(this.webElement, xOffset, yOffset);
+    }
+
+    public void moveToElement() {
+        actions = new Actions(driver);
+        actions.moveToElement(this.webElement).build().perform();
+    }
+
+    public void moveByOffset(int xOffset, int yOffset) {
+        actions = new Actions(driver);
+        actions.moveByOffset(xOffset, yOffset).click().build().perform();
+    }
+
+    public void moveSliderUpByMouse() {
+        actions = new Actions(driver);
+        for (int i = -25; i <= 30; i = i + 5) {
+            actions.moveToElement(this.webElement, i, 0);
+            actions.moveByOffset(i, 0).click().build().perform();
+        }
+    }
+
+    public void moveSliderDownByMouse() {
+        actions = new Actions(driver);
+        for (int i = 25; i >= -30; i = i - 5) {
+            actions.moveToElement(this.webElement, i, 0);
+            actions.moveByOffset(i, 0).click().build().perform();
+        }
+    }
+
     public boolean isDisplayed(int timeout) {
         boolean status = this.webElement != null && Waiters.waitUntilCondition(() -> webElement.isDisplayed(),
                 timeout,
@@ -142,6 +173,12 @@ public class BaseComponent {
         String value = this.webElement.getAttribute(attribute);
         logger.debug(String.format("Web element '%s' attribute '%s' has value '%s'",
                 this.getClass(), attribute, value));
+        return value;
+    }
+
+    public String getTagName() {
+        String value = this.webElement.getTagName();
+        logger.debug(String.format("Web element tag '%s' has value '%s'", this.getClass(), value));
         return value;
     }
 

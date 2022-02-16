@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -23,12 +24,12 @@ public class ChromeBrowser extends BaseBrowser {
 
     private ChromeOptions setupChromeOptions() {
         ChromeOptions options = new ChromeOptions();
-        String downloadDir = "";
+        String downloadDir = Paths.get("").toAbsolutePath() + "\\src\\main\\resources\\downloads";
 
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);
-        prefs.put("download.default_directory", downloadDir + "\\src\\main\\resources\\downloads");
+        prefs.put("download.default_directory", downloadDir);
         prefs.put("download.promt_for_download", false);
         options.setExperimentalOption("prefs", prefs);
         options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
